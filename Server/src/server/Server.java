@@ -135,4 +135,14 @@ public class Server extends JFrame{
            }
        });
    }
+   
+   private void ableToType(boolean tof)
+   {
+       SwingUtilities.invokeLater(new Runnable() {
+           @Override
+           public void run() {
+               userText.setEditable(tof);
+           }
+       });
+   }
 }
