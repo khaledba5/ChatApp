@@ -64,14 +64,19 @@ public class Server extends JFrame{
                 setupStreams();
                 whileChatting();
             }catch(EOFException e){
-                showMessage("\nServer Ended The Connection");
+                showMessage("\nThe Connection is Ended..");
             }finally{
                 closeCrap();
             }
         }
        }catch(IOException e){
            e.printStackTrace();
-       }
-       
+       }   
+   }
+   
+   private void waitForConnection() throws IOException
+   {
+       connection = server.accept();
+       showMessage("Now Connected To: "+connection.getInetAddress().getHostName());
    }
 }
