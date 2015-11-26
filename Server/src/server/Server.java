@@ -5,6 +5,9 @@
  */
 package server;
 
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.*;
 import java.net.*;
 import java.util.*;
@@ -21,70 +24,34 @@ import javax.swing.*;
 
 
 public class Server extends JFrame{
-    public static ArrayList<String> Messages = new ArrayList<String>();
-    public static ArrayList<ClientThread> Clients = new ArrayList<ClientThread>();
-    static ServerSocket server;
-    /**
-     * @param args the command line arguments
-     */
-    
-    
-    
-   static class ClientThread extends Thread
-{
-    Socket Client;
-    DataInputStream input;
-    DataOutputStream output;
-    public ClientThread(Socket Client) throws IOException
-    {
-        this.output = new DataOutputStream(Client.getOutputStream());
-        this.input = new DataInputStream(Client.getInputStream());
-        this.Client = Client;
-    }
-    
-    
-    @Override
-    public void run()
-    {
-        try {
-            while(true)
-            {
-                String message = input.readUTF();
-                System.out.println(message);
-                Messages.add(message);
-            }
-            
-            
-        } catch (IOException ex) {
-            Logger.getLogger(ClientThread.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
-}
-    
-    
-    
-    
-    public static void main(String[] args) throws IOException {
-        // TODO code application logic here
-    server = new ServerSocket(1234);
-    while(true)
-    {
-        Socket c = server.accept();
-        System.out.println("New Client Arrived");
-        ClientThread T = new ClientThread(c);
-        Clients.add(T);
-        T.start();
-        for(ClientThread client : Clients)
-        {
-            if(Messages.size()>0)
-            {
-                for(String msg : Messages)
-                {
-                    client.output.writeUTF(msg);
-                }
-            }
-        }
-    }
-    }    
+   private JTextField userText;
+   private JTextArea chatWindow;
+   private ObjectInputStream input;
+   private ObjectOutputStream output;
+   private ServerSocket server;
+   private Socket connection;
+   
+   public Server()
+   {
+       super("Instant Messaging");
+       userText = new JTextField();
+       userText.setEditable(false);         //Prevent Typing Message Until Anyone Connect
+       userText.addActionListener(new ActionListener() 
+       {
+           @Override
+           //This Method is invoked When We Press Enter
+           public void actionPerformed(ActionEvent e) 
+           {
+               sendMessage(e.getActionCommand());
+               userText.setText("");        //Empty Text Field After Sending a Message
+           }
+       });
+       add(userText,BorderLayout.NORTH);
+       
+       chatWindow = new JTextArea();
+       add(new JScrollPane(chatWindow));
+       setSize(300,150);
+       setVisible(true);
+       
+   }
 }
