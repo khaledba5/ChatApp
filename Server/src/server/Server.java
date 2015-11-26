@@ -79,4 +79,11 @@ public class Server extends JFrame{
        connection = server.accept();
        showMessage("Now Connected To: "+connection.getInetAddress().getHostName());
    }
+   
+   private void setupStreams() throws IOException
+   {
+       output = new ObjectOutputStream(connection.getOutputStream());
+       output.flush();
+       input = new ObjectInputStream(connection.getInputStream());
+   }
 }
