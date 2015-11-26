@@ -77,7 +77,7 @@ public class Server extends JFrame{
    private void waitForConnection() throws IOException
    {
        connection = server.accept();
-       showMessage("Now Connected To: "+connection.getInetAddress().getHostName());
+       showMessage("\nNow Connected To: "+connection.getInetAddress().getHostName());
    }
    
    private void setupStreams() throws IOException
@@ -85,5 +85,20 @@ public class Server extends JFrame{
        output = new ObjectOutputStream(connection.getOutputStream());
        output.flush();
        input = new ObjectInputStream(connection.getInputStream());
+   }
+   
+   private void whileChatting() throws IOException
+   {
+       String message = " You Are Now Connected!! ";
+       sendMessage(message);
+       ableToType(true);
+       do{
+           try{
+               message = (String)input.readObject();
+               showMessage("\n"+message);
+           }catch(ClassNotFoundException e){
+               showMessage("Can't Recognize Data From The Other Side");
+           }
+       }while(!message.equals("CLIENT - END"));
    }
 }
