@@ -66,7 +66,7 @@ public class Server extends JFrame{
             }catch(EOFException e){
                 showMessage("\nThe Connection is Ended..");
             }finally{
-                closeCrap();
+                closeConnection();
             }
         }
        }catch(IOException e){
@@ -97,8 +97,21 @@ public class Server extends JFrame{
                message = (String)input.readObject();
                showMessage("\n"+message);
            }catch(ClassNotFoundException e){
-               showMessage("Can't Recognize Data From The Other Side");
+               showMessage("\nCan't Recognize Data From The Other Side");
            }
        }while(!message.equals("CLIENT - END"));
+   }
+   
+   private void closeConnection()
+   {
+       showMessage("\nClosing Connections..");
+       ableToType(false);
+       try{
+           output.close();
+           input.close();
+           connection.close();
+       }catch(IOException e){
+           e.printStackTrace();
+       }
    }
 }
