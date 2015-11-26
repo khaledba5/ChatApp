@@ -125,4 +125,14 @@ public class Server extends JFrame{
            chatWindow.append("\nError in Sending This Message...");
        }
    }
+   
+   private void showMessage(String text)
+   {
+       SwingUtilities.invokeLater(new Runnable() {
+           @Override
+           public void run() {
+               chatWindow.append(text);
+           }
+       });
+   }
 }
