@@ -53,6 +53,7 @@ public class Server extends JFrame{
        setSize(300,150);
        setVisible(true);  
    }
+
    
    public void startRunning()
    {
