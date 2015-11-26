@@ -114,4 +114,15 @@ public class Server extends JFrame{
            e.printStackTrace();
        }
    }
+   
+   private void sendMessage(String message)
+   {
+       try{
+           output.writeObject("SERVER - "+message);
+           output.flush();
+           showMessage("\nSERVER - "+message);
+       }catch(IOException e){
+           chatWindow.append("\nError in Sending This Message...");
+       }
+   }
 }
